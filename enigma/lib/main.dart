@@ -1,4 +1,7 @@
+import 'package:enigma/screens/auth_screen.dart';
+import 'package:enigma/screens/profile_setup.dart';
 import 'package:flutter/material.dart';
+import 'screens/splash_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -6,11 +9,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Enigma 6.0',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: AuthScreen(),
+      routes: {
+        ProfileSetupScreen.routeName: (ctx) => ProfileSetupScreen()
+      },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
