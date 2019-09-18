@@ -19,6 +19,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_auth: ^0.14.0+5
+  google_sign_in: ^4.0.7
+  provider:  ^3.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -39,7 +42,27 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/background.png
+    - assets/images/enigma.png
+    - assets/images/hoodie_2.png
+    - assets/images/hoodie.png
+    - assets/images/hoodie_3.png
 
+  fonts:
+    - family: Chosence
+      fonts:
+        - asset: assets/fonts/chosence/Chosence Bold Italic.otf
+        - asset: assets/fonts/chosence/Chosence Bold.otf
+        - asset: assets/fonts/chosence/Chosence Regular.otf
+        - asset: assets/fonts/chosence/Chosence Regular Italic.otf
+        - asset: assets/fonts/chosence/Chosence Light.otf
+        - asset: assets/fonts/chosence/Chosence Light Italic.otf
+    - family: Saira
+      fonts:
+        - asset: assets/fonts/saira/Saira-Regular.ttf
+        - asset: assets/fonts/saira/Saira-SemiBold.ttf
+        - asset: assets/fonts/saira/Saira-Bold.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

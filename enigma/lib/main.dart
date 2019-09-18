@@ -1,16 +1,32 @@
+import 'package:enigma/providers/auth.dart';
+import 'package:enigma/screens/auth_screen.dart';
+import 'package:enigma/screens/profile_setup.dart';
 import 'package:flutter/material.dart';
+import 'screens/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Enigma 6.0',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: AuthScreen(),
+        routes: {
+          ProfileSetupScreen.routeName: (ctx) => ProfileSetupScreen()
+        },
+        debugShowCheckedModeBanner: false,
       ),
-      home: MyHomePage(),
     );
   }
 }

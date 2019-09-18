@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "4070460195",
+    "firebase_url": "https://enigma-2019.firebaseio.com",
+    "project_id": "enigma-2019",
+    "storage_bucket": "enigma-2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4070460195:android:a89cdfd0e9fe163f6d1a96",
+        "android_client_info": {
+          "package_name": "com.example.enigma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "4070460195-18lk3dqiboef7fl98jf5mdfl4fjsrd6n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa1hhjfE-fTrb__Hpy_8txwck78FNXyK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "4070460195-18lk3dqiboef7fl98jf5mdfl4fjsrd6n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
