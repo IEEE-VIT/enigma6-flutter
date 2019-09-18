@@ -1,7 +1,8 @@
 import 'package:enigma/screens/profile_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:enigma/size_config.dart';
-import 'package:enigma/widgets/top_bar.dart';
+import 'package:enigma/providers/auth.dart';
+import 'package:provider/provider.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -27,7 +28,24 @@ class _AuthScreenState extends State<AuthScreen> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  void _showErrorDialog(String error){
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Error!'),
+        content: Text('$error'), 
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed:() {Navigator.of(ctx).pop();},
+          )
+        ],
+      )
+    );
+  }
+
+
+  void _submit() async{
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -36,11 +54,18 @@ class _AuthScreenState extends State<AuthScreen> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-    } else {
-      // Sign user up
-      Navigator.of(context).pushNamed(ProfileSetupScreen.routeName);
+    try{
+      if (_authMode == AuthMode.Login) {
+        // Log user in
+      await Provider.of<Auth>(context).emailPasswordLogin(_authData['email'], _authData['password']);
+      } else {
+        // Sign user up
+        await Provider.of<Auth>(context).emailPasswordSignup(_authData['email'], _authData['password']);
+      }
+    }
+    catch(error){
+      String errorMessage = 'Could not authenticate you. Please try again later';
+      _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;
