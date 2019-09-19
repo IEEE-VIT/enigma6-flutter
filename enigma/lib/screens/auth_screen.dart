@@ -182,7 +182,15 @@ class _AuthScreenState extends State<AuthScreen> {
                           width: SizeConfig.blockSizeHorizontal*75,
                           // Google Login Button
                           child: FlatButton(
-                            onPressed: (){},
+                            onPressed: () async{
+                              try{
+                                await Provider.of<Auth>(context).signInWithGoogle();
+                              }
+                              catch(e)
+                              {
+                                print(e);
+                              }
+                            },
                             color: Color.fromRGBO(33, 33, 33, 1),
                             textColor: Colors.white,
                             shape: RoundedRectangleBorder(
