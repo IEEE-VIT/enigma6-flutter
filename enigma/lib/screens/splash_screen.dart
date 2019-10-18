@@ -119,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 SizedBox(height: SizeConfig.screenHeight/10,),
                 Stack(
                   children: <Widget>[
-                    Icon(Icons.play_circle_outline, color: Colors.white, size: SizeConfig.screenHeight/15,)
+                    Icon(Icons.chevron_left, color: Colors.white, size: SizeConfig.screenHeight/15,)
                   ],
                 )
               ],

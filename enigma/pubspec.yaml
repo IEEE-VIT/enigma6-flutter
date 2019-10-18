@@ -14,7 +14,7 @@ description: Enigma 6.0
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -22,6 +22,10 @@ dependencies:
   firebase_auth: ^0.14.0+5
   google_sign_in: ^4.0.7
   provider:  ^3.1.0
+  percent_indicator: ^2.1.1+1
+  draggable_scrollbar: ^0.0.4
+  http: ^0.12.0+2
+  shared_preferences: ^0.5.3+4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -48,6 +52,17 @@ flutter:
     - assets/images/hoodie_2.png
     - assets/images/hoodie.png
     - assets/images/hoodie_3.png
+    - assets/images/road.png
+    - assets/images/key.png
+    - assets/images/winner.png
+    - assets/images/question.png
+    - assets/images/score.png
+    - assets/images/rank.png
+    - assets/images/leaderboard.png
+    - assets/images/rules.png
+    - assets/images/game.png
+    - assets/images/logout.png
+    - assets/images/profile.png
 
   fonts:
     - family: Chosence
