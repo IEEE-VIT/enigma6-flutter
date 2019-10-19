@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
           // ),
           home: AuthScreen(),
           routes: {
+            AuthScreen.routeName : (ctx) => AuthScreen(),
             ProfileScreen.routeName: (ctx) => ProfileScreen(),
             ProfileSetupScreen.routeName: (ctx) => ProfileSetupScreen(),
             LeaderBoardScreen.routeName: (ctx) => LeaderBoardScreen(),

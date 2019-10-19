@@ -14,6 +14,7 @@ class Auth with ChangeNotifier{
   final GoogleSignIn googleSignIn = GoogleSignIn();
   String _uIdToken;
   String _userEmail;
+  bool _signedInWithGoogle;
 
   bool get isAuth{
     return uIdToken!=null;
@@ -34,6 +35,9 @@ class Auth with ChangeNotifier{
       if (user.user.isEmailVerified){
         _uIdToken = user.user.uid;
         _userEmail = user.user.email;
+        _signedInWithGoogle = false;
+        print(_signedInWithGoogle);
+        
         notifyListeners();
 
       final prefs = await SharedPreferences.getInstance();
@@ -68,7 +72,9 @@ class Auth with ChangeNotifier{
   }
 
   Future<void> signOut() async{
-    await _auth.signOut();
+    !_signedInWithGoogle ? 
+    await _auth.signOut() : 
+    await googleSignIn.signOut();
     notifyListeners();
   }
 
@@ -93,7 +99,8 @@ class Auth with ChangeNotifier{
 
   _uIdToken = user.user.uid;
   _userEmail = user.user.email;
-
+  _signedInWithGoogle = true;
+  print(_signedInWithGoogle);
   notifyListeners();
   final prefs = await SharedPreferences.getInstance();
   prefs.setString('uId', _uIdToken);

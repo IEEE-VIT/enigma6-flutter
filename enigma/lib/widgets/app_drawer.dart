@@ -1,8 +1,11 @@
+import 'package:enigma/providers/auth.dart';
+import 'package:enigma/screens/auth_screen.dart';
 import 'package:enigma/screens/leaderboard_screen.dart';
 import 'package:enigma/screens/profile_screen.dart';
 import 'package:enigma/screens/question_screen.dart';
 import 'package:enigma/screens/rules_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../size_config.dart';
 
 
@@ -86,7 +89,14 @@ class AppDrawer extends StatelessWidget {
                 fontStyle: FontStyle.normal,
               ),),
               onTap: () {
-                Navigator.of(context).pushReplacementNamed('/');
+                try{
+                Provider.of<Auth>(context).signOut().then((onValue){
+                  Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
+                });
+                }
+                catch(error){
+                  throw(error);
+                }
               },
             ),
           ],
