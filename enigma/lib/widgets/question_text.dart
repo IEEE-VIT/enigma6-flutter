@@ -35,6 +35,7 @@ import 'package:flutter/material.dart';
 //   }
 // }
 
+// ignore: must_be_immutable
 class QuestionText extends StatelessWidget {
   String text = '';
   QuestionText(this.text);

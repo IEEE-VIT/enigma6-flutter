@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 
+// ignore: must_be_immutable
 class ProgressBar extends StatefulWidget {
   int level;
   ProgressBar(this.level);

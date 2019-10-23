@@ -14,11 +14,11 @@ class ProfileSetupScreen extends StatefulWidget {
 }
 
 String fullName = '';
-TextEditingController _nameController = new TextEditingController();
 
 
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  // ignore: unused_field
   var _isLoading = false;
 
   //Map to store entered data

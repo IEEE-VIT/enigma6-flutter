@@ -32,8 +32,7 @@ class Auth with ChangeNotifier{
   Future<FirebaseUser> emailPasswordLogin(String email, String password) async{
     try{
       AuthResult user = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      if (user.user.isEmailVerified){
-        _uIdToken = user.user.uid;
+      _uIdToken = user.user.uid;
         _userEmail = user.user.email;
         _signedInWithGoogle = false;
         print(_signedInWithGoogle);
@@ -43,14 +42,12 @@ class Auth with ChangeNotifier{
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('uId', _uIdToken);
       return user.user;
-      }
-      else{
-        return null;
-      }
+      
   
     }
     catch(error){
-      throw(error);
+      print(error);
+      return null;
     }
   }
 

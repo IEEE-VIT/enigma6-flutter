@@ -17,9 +17,10 @@ Future<HintResponse> getHint(String uid) async{
   return extractedResponse;
 }
 
+// ignore: must_be_immutable
 class QuestionPic extends StatefulWidget {
-  String imgUrl;
-  String questionNumber;
+  final String imgUrl;
+  final String questionNumber;
   QuestionPic(this.imgUrl, this.questionNumber,);
   @override
   _QuestionPicState createState() => _QuestionPicState();

@@ -72,6 +72,10 @@ class _AuthScreenState extends State<AuthScreen> {
 			if (_authMode == AuthMode.Login) {
 				// Log user in  
 		    await Provider.of<Auth>(context).emailPasswordLogin(_authData['email'], _authData['password']).then((response) async {
+          if(!response.isEmailVerified){
+          	_showErrorDialog('It seems like you haven\'t verified your mail. Please do so before proceeding.');
+          	return;
+          }
           await Provider.of<Auth>(context).registerUser(response.uid, '', response.email).then((val){
             if(val.wasUserRegistered==true){
               Navigator.of(context).pushNamed(QuestionScreen.routeName);
@@ -84,15 +88,37 @@ class _AuthScreenState extends State<AuthScreen> {
 			
 			} else {
 				// Sign user up
-			await Provider.of<Auth>(context).emailPasswordSignup(_authData['email'], _authData['password']);
-				_switchAuthMode();
+        await Provider.of<Auth>(context).emailPasswordSignup(_authData['email'], _authData['password']).then((onValue){
+			  _switchAuthMode();
 				_scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text('A link has been sent to your mail! Please click on it to verify your account.')));
+        }).catchError((onError){
+          print(onError.toString());
+          if(onError.toString().contains('ERROR_WEAK_PASSWORD')){
+            _showErrorDialog('Please chose a stronger password.');
+          }
+          else if(onError.toString().contains('ERROR_EMAIL_ALREADY_IN_USE')){
+            _showErrorDialog('This email is already in use.');
+          }
+          else{
+            _showErrorDialog('There was a problem singning you up');
+          }
+        });
 			}
 		}
 		catch(error){
-			String errorMessage = 'Could not authenticate you. Please try again later';
-			print(error);
-			_showErrorDialog(errorMessage);
+			print('lol');
+			print(error.toString());
+			if (error.toString().contains('ERROR_WRONG_PASSWORD')){
+				_showErrorDialog('It seems you have entered a wrong password.');
+			}
+			else if(error.toString().contains('ERROR_USER_DOES_NOT_EXIST')){
+				_showErrorDialog('Please sign up with this email before loggin in.');
+			}
+			else{
+				String errorMessage = 'Could not authenticate you!';
+				print(error);
+				_showErrorDialog(errorMessage);
+			}
 		}
 		setState(() {
 			_isLoading = false;
@@ -103,6 +129,7 @@ class _AuthScreenState extends State<AuthScreen> {
 	void initState() {
 		password1Visible = false;
 		password2Visible = false;
+		super.initState();
 	}
 
 	@override
@@ -239,6 +266,7 @@ class _AuthScreenState extends State<AuthScreen> {
 																			enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)) 
 																			),
 																		keyboardType: TextInputType.emailAddress,
+// ignore: missing_return
 																		validator: (value) {
 																			if (value.isEmpty || !value.contains('@')) {
 																				return 'Invalid email!';
@@ -279,6 +307,7 @@ class _AuthScreenState extends State<AuthScreen> {
 																			),
 																		obscureText: !password1Visible,
 																		controller: _passwordController,
+// ignore: missing_return
 																		validator: (value) {
 																			if (value.isEmpty || value.length < 5) {
 																				return 'Password is too short!';
@@ -322,6 +351,7 @@ class _AuthScreenState extends State<AuthScreen> {
 																				enabled: _authMode == AuthMode.Signup,
 																				obscureText: !password2Visible,
 																				validator: _authMode == AuthMode.Signup
+// ignore: missing_return
 																						? (value) {
 																								if (value != _passwordController.text) {
 																									return 'Passwords do not match!';

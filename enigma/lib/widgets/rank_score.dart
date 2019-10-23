@@ -1,6 +1,7 @@
 import 'package:enigma/size_config.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class RankAndScore extends StatelessWidget {
   
   String rank = '';

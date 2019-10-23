@@ -123,6 +123,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
            Center(
              child: FutureBuilder<q.Payload>(
                future: currentQuestion,
+                // ignore: missing_return
                 builder: (context, snapshot){
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:

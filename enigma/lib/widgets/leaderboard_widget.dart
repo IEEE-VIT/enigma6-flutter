@@ -2,10 +2,10 @@ import 'package:enigma/size_config.dart';
 import 'package:flutter/material.dart';
 
 class LeaderBoardWidget extends StatefulWidget {
-  String rank;
-  String name;
-  String ques;
-  String score;
+  final String rank;
+  final String name;
+  final String ques;
+  final String score;
   LeaderBoardWidget({this.name, this.rank, this.ques, this.score});
 
   @override

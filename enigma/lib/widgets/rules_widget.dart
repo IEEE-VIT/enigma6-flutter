@@ -1,6 +1,7 @@
 import 'package:enigma/size_config.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class RulesWidget extends StatelessWidget {
   String rule;
   RulesWidget(this.rule);

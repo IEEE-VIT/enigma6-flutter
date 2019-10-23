@@ -30,11 +30,15 @@ class AppDrawer extends StatelessWidget {
                 fontStyle: FontStyle.normal,
               ),
             ),
+            centerTitle: true,
             backgroundColor: Color.fromRGBO(52, 52, 52, 1),
           ),
             Divider(),
             ListTile(
-              leading: Image.asset('assets/images/rules.png'),
+              leading: Container(
+                height: SizeConfig.blockSizeHorizontal*8,
+                  child: Image.asset('assets/images/rules.png')
+              ),
               title: Text('RULES', style: TextStyle(
                 fontFamily: 'Chosence',
                 fontSize: SizeConfig.blockSizeHorizontal*6,
@@ -44,9 +48,9 @@ class AppDrawer extends StatelessWidget {
                 Navigator.of(context).pushReplacementNamed(RulesScreen.routeName);
               },
             ),
-            Divider(),
+            Divider(height: SizeConfig.blockSizeHorizontal*0.5,),
             ListTile(
-              leading: Image.asset('assets/images/game.png'),
+              leading: Container(height: SizeConfig.blockSizeHorizontal*8,child: Image.asset('assets/images/game.png')),
               title: Text('GAME', style: TextStyle(
                 fontFamily: 'Chosence',
                 fontSize: SizeConfig.blockSizeHorizontal*6,
@@ -56,9 +60,9 @@ class AppDrawer extends StatelessWidget {
                 Navigator.of(context).pushReplacementNamed(QuestionScreen.routeName);
               },
             ),
-            Divider(),
+            Divider(height: SizeConfig.blockSizeHorizontal*0.5,),
             ListTile(
-              leading: Image.asset('assets/images/leaderboard.png'),
+              leading: Container(height: SizeConfig.blockSizeHorizontal*8,child: Image.asset('assets/images/leaderboard.png')),
               title: Text('LEADERBOARD', style: TextStyle(
                 fontFamily: 'Chosence',
                 fontSize: SizeConfig.blockSizeHorizontal*6,
@@ -68,9 +72,9 @@ class AppDrawer extends StatelessWidget {
                 Navigator.of(context).pushReplacementNamed(LeaderBoardScreen.routeName);
               },
             ),
-            Divider(),
+            Divider(height: SizeConfig.blockSizeHorizontal*0.5,),
             ListTile(
-              leading: Image.asset('assets/images/profile.png'),
+              leading: Container(height: SizeConfig.blockSizeHorizontal*8,child: Image.asset('assets/images/profile.png')),
               title: Text('PROFILE', style: TextStyle(
                 fontFamily: 'Chosence',
                 fontSize: SizeConfig.blockSizeHorizontal*6,
@@ -80,9 +84,9 @@ class AppDrawer extends StatelessWidget {
                 Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
               },
             ),
-            Divider(),
+            Divider(height: SizeConfig.blockSizeHorizontal*0.5,),
             ListTile(
-              leading: Image.asset('assets/images/logout.png'),
+              leading: Container(height: SizeConfig.blockSizeHorizontal*8,child: Image.asset('assets/images/logout.png')),
               title: Text('LOGOUT', style: TextStyle(
                 fontFamily: 'Chosence',
                 fontSize: SizeConfig.blockSizeHorizontal*6,

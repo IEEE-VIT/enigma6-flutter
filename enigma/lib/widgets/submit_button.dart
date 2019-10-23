@@ -29,7 +29,6 @@ const url = '/submitAnswer';
 class _SubmitButtonState extends State<SubmitButton> {
 
   TextEditingController _answerController = new TextEditingController();
-  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final token = Provider.of<Auth>(context).uIdToken;
