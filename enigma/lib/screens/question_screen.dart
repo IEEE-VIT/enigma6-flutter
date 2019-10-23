@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:enigma/providers/auth.dart';
 import 'package:enigma/providers/profile.dart';
-import 'package:enigma/screens/profile_screen.dart';
 import 'package:enigma/size_config.dart';
 import 'package:enigma/widgets/app_drawer.dart';
 import 'package:enigma/widgets/progress_bar.dart';
@@ -41,7 +40,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     super.initState();
     final token = Provider.of<Auth>(context, listen: false).uIdToken;
     currentQuestion = _getCurrentQuestion(token);
-    //rankAndScore = _getRankScore(token);
+    rankAndScore = _getRankScore(token);
   }
 
   @override
@@ -78,14 +77,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
     }
 
     Future<Profile> _getRankScore(String uid) async{
-      final response  = await http.get(
-        rankScoreUrl,
-        headers: {'uid': uid}
+      final response  = await http.post(
+          rankScoreUrl,
+          headers: {'Authorization': 'Bearer $uid'}
       );
+      print(response.body);
       final profile = profileFromJson(response.body);
       return profile;
     }
-  
+
   @override
   Widget build(BuildContext context) {
 
@@ -198,7 +198,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                             hintClicked = false;
                                             _answerController.clear();
                                             currentQuestion = _getCurrentQuestion(uId);
-                                            //rankAndScore = _getRankScore(uId);
+                                            rankAndScore = _getRankScore(uId);
                                           });
                                         }
                                         else if(result.isAnswerCorrect == false){
@@ -223,55 +223,64 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 }
              ),
            ),
-          //  FutureBuilder<Profile>(
-          //   future: rankAndScore,
-          //   builder: (ctx, snapshot){
-          //     switch(snapshot.connectionState){
-          //       case ConnectionState.none:
-          //         return Text('s');
-          //       case ConnectionState.active:
-          //         return Text('a');
-          //       case ConnectionState.waiting:
-          //         return Positioned(
-          //         bottom: 0,
-          //         child: Container(
-          //           padding: EdgeInsets.all(20),
-          //           decoration: BoxDecoration(
-          //             color: Color.fromRGBO(52, 52, 52, 1)
-          //           ),
-          //           width: SizeConfig.screenWidth,
-          //           height: SizeConfig.screenHeight/6.5,
-          //           child: Column(
-          //             children: <Widget>[
-          //               RankAndScore('', ''),
-          //               Padding(padding: EdgeInsets.only(top: SizeConfig.safeBlockVertical),),
-          //               ProgressBar(null)
-          //             ],
-          //           ),
-          //         ),
-          //       );
-          //       case ConnectionState.done:
-          //         Positioned(
-          //           bottom: 0,
-          //           child: Container(
-          //             padding: EdgeInsets.all(20),
-          //             decoration: BoxDecoration(
-          //               color: Color.fromRGBO(52, 52, 52, 1)
-          //             ),
-          //             width: SizeConfig.screenWidth,
-          //             height: SizeConfig.screenHeight/6.5,
-          //             child: Column(
-          //               children: <Widget>[
-          //               RankAndScore(snapshot.data.payload.user.rank.toString(), snapshot.data.payload.user.points.toString()),
-          //               Padding(padding: EdgeInsets.only(top: SizeConfig.safeBlockVertical),),
-          //               ProgressBar(snapshot.data.payload.user.level)
-          //               ],
-          //             ),
-          //           ),
-          //         );
-          //     }
-          //   }
-          //  )
+
+            FutureBuilder<Profile>(
+             future: rankAndScore,
+             // ignore: missing_return
+             builder: (ctx, snapshot){
+               switch(snapshot.connectionState){
+                 case ConnectionState.none:
+                   return Text('s');
+                 case ConnectionState.active:
+                   return Text('a');
+                 case ConnectionState.waiting:
+                   return Positioned(
+                   bottom: 0,
+                   child: Container(
+                     padding: EdgeInsets.all(20),
+                     decoration: BoxDecoration(
+                       color: Color.fromRGBO(52, 52, 52, 1)
+                     ),
+                     width: SizeConfig.screenWidth,
+                     height: SizeConfig.screenHeight/6.5,
+                     child: Column(
+                       children: <Widget>[
+                         RankAndScore('', ''),
+                         Padding(padding: EdgeInsets.only(top: SizeConfig.safeBlockVertical),),
+                         ProgressBar(0)
+                       ],
+                     ),
+                   ),
+                 );
+                 case ConnectionState.done:
+                   if(snapshot.hasData){
+                     print(snapshot.data.payload.user.rank);
+                     print('gay');
+                     return Positioned(
+                       bottom: 0,
+                       child: Container(
+                         padding: EdgeInsets.all(20),
+                         decoration: BoxDecoration(
+                             color: Color.fromRGBO(52, 52, 52, 1)
+                         ),
+                         width: SizeConfig.screenWidth,
+                         height: SizeConfig.screenHeight/6.5,
+                         child: Column(
+                           children: <Widget>[
+                             RankAndScore(snapshot.data.payload.user.rank.toString(), snapshot.data.payload.user.points.toString()),
+                             Padding(padding: EdgeInsets.only(top: SizeConfig.safeBlockVertical),),
+                             ProgressBar(snapshot.data.payload.user.level)
+                           ],
+                         ),
+                       ),
+                     );
+                   }
+                   else if(!snapshot.hasData){
+                     print('ur mom gay');
+                   }
+               }
+             }
+            )
           ],
         ),
       ),

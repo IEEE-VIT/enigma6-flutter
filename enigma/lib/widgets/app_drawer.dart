@@ -87,7 +87,7 @@ class AppDrawer extends StatelessWidget {
             Divider(height: SizeConfig.blockSizeHorizontal*0.5,),
             ListTile(
               leading: Container(height: SizeConfig.blockSizeHorizontal*8,child: Image.asset('assets/images/logout.png')),
-              title: Text('LOGOUT', style: TextStyle(
+              title: Text('QUIT', style: TextStyle(
                 fontFamily: 'Chosence',
                 fontSize: SizeConfig.blockSizeHorizontal*6,
                 fontStyle: FontStyle.normal,

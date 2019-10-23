@@ -13,7 +13,7 @@ class RulesWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal*4, 0, SizeConfig.blockSizeHorizontal*4, SizeConfig.blockSizeVertical*1.85),
+          padding: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal*4, 0, SizeConfig.blockSizeHorizontal*4, SizeConfig.blockSizeVertical*1.75),
           child: Container(
             width: SizeConfig.blockSizeHorizontal*3,
             height: SizeConfig.blockSizeVertical*6,

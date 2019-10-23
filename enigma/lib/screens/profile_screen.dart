@@ -41,183 +41,186 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      drawer: AppDrawer(),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        drawer: AppDrawer(),
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black
+              ),
             ),
-          ),
-          FutureBuilder(
-            future: profileData,
-            builder: (context, AsyncSnapshot<Profile> snapshot) {
-              Widget profileList;
-              if (snapshot.hasData){
-                profileList =  SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      SizedBox(height: SizeConfig.blockSizeVertical*1.5,),
-                      ProfileTile(snapshot.data.payload.user.name, 'Username'),
-                      ProfileTile(snapshot.data.payload.user.email,'Email'),
-                      ProfileTile(snapshot.data.payload.user.usedHint.length.toString(), 'Hints Used'),
-                      // QUESTIONS SOLVED
-                      ProfileCard(snapshot.data.payload.user.level, 'QUESTIONS SOLVED', 'question'),
-                      // SCORE
-                      ProfileCard(snapshot.data.payload.user.points, 'SCORE', 'score'),
-                      //RANK
-                      ProfileCard(snapshot.data.payload.user.rank, 'RANK', 'rank')
-                    ]
-                  ),
-                );
-              }
-              else if (snapshot.connectionState == ConnectionState.waiting){
-                profileList =  SliverList(
+            FutureBuilder(
+              future: profileData,
+              builder: (context, AsyncSnapshot<Profile> snapshot) {
+                Widget profileList;
+                if (snapshot.hasData){
+                  profileList =  SliverList(
                     delegate: SliverChildListDelegate(
-                    [
-                      Padding(
-                        padding:  EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal*4, SizeConfig.blockSizeVertical*5, 0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Container(
-                                width: SizeConfig.screenWidth*0.75,
-                                height: SizeConfig.blockSizeVertical*2,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                            Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Container(
-                                width: SizeConfig.screenWidth*0.3,
-                                height: SizeConfig.blockSizeVertical*2,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.blockSizeVertical*5,),
-
-                            Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Container(
-                                width: SizeConfig.screenWidth*0.75,
-                                height: SizeConfig.blockSizeVertical*2,
-                                decoration: BoxDecoration(
+                      [
+                        SizedBox(height: SizeConfig.blockSizeVertical*1.5,),
+                        ProfileTile(snapshot.data.payload.user.name, 'Username'),
+                        ProfileTile(snapshot.data.payload.user.email,'Email'),
+                        ProfileTile(snapshot.data.payload.user.usedHint.length.toString(), 'Hints Used'),
+                        // QUESTIONS SOLVED
+                        ProfileCard(snapshot.data.payload.user.level, 'QUESTIONS SOLVED', 'question'),
+                        // SCORE
+                        ProfileCard(snapshot.data.payload.user.points, 'SCORE', 'score'),
+                        //RANK
+                        ProfileCard(snapshot.data.payload.user.rank, 'RANK', 'rank')
+                      ]
+                    ),
+                  );
+                }
+                else if (snapshot.connectionState == ConnectionState.waiting){
+                  profileList =  SliverList(
+                      delegate: SliverChildListDelegate(
+                      [
+                        Padding(
+                          padding:  EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal*4, SizeConfig.blockSizeVertical*5, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[100],
+                                child: Container(
+                                  width: SizeConfig.screenWidth*0.75,
+                                  height: SizeConfig.blockSizeVertical*2,
+                                  decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                            Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Container(
-                                width: SizeConfig.screenWidth*0.3,
-                                height: SizeConfig.blockSizeVertical*2,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                               ),
+                              SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[100],
+                                child: Container(
+                                  width: SizeConfig.screenWidth*0.3,
+                                  height: SizeConfig.blockSizeVertical*2,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
+                                  ),
+                                ),
                               ),
-                            ),
-                            SizedBox(height: SizeConfig.blockSizeVertical*5,),
+                              SizedBox(height: SizeConfig.blockSizeVertical*5,),
 
-                            Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Container(
-                                width: SizeConfig.screenWidth*0.75,
-                                height: SizeConfig.blockSizeVertical*2,
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[100],
+                                child: Container(
+                                  width: SizeConfig.screenWidth*0.75,
+                                  height: SizeConfig.blockSizeVertical*2,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
                                   ),
-                              ),
-                            ),
-                            SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                            Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Container(
-                                width: SizeConfig.screenWidth*0.3,
-                                height: SizeConfig.blockSizeVertical*2,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
                                 ),
                               ),
-                            ),
-                            SizedBox(height: SizeConfig.blockSizeVertical*5,),
-                            Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Container(
-                                width: SizeConfig.screenHeight/3,
-                                height: SizeConfig.screenHeight/6,
-                                decoration: BoxDecoration(
+                              SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[100],
+                                child: Container(
+                                  width: SizeConfig.screenWidth*0.3,
+                                  height: SizeConfig.blockSizeVertical*2,
+                                  decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
+                                 ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: SizeConfig.blockSizeVertical*7,),Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Container(
-                                width: SizeConfig.screenHeight/3,
-                                height: SizeConfig.screenHeight/6,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
+                              SizedBox(height: SizeConfig.blockSizeVertical*5,),
+
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[100],
+                                child: Container(
+                                  width: SizeConfig.screenWidth*0.75,
+                                  height: SizeConfig.blockSizeVertical*2,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
+                                    ),
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[100],
+                                child: Container(
+                                  width: SizeConfig.screenWidth*0.3,
+                                  height: SizeConfig.blockSizeVertical*2,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: SizeConfig.blockSizeVertical*5,),
+                              Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[100],
+                                child: Container(
+                                  width: SizeConfig.screenHeight/3,
+                                  height: SizeConfig.screenHeight/6,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: SizeConfig.blockSizeVertical*7,),Shimmer.fromColors(
+                                baseColor: Colors.grey[300],
+                                highlightColor: Colors.grey[100],
+                                child: Container(
+                                  width: SizeConfig.screenHeight/3,
+                                  height: SizeConfig.screenHeight/6,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ]
+                    )
+                  );
+                }
+                return CustomScrollView(
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      pinned: true,
+                      floating: false,
+                      backgroundColor: Colors.grey[600],
+                      expandedHeight: SizeConfig.screenHeight/4,
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Image.asset('assets/images/hoodie_3.png', fit: BoxFit.cover),
+                        title: Padding(
+                          padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4.25),
+                          child: Text('PROFILE', style: TextStyle(
+                            fontFamily: 'Saira',
+                            fontSize: SizeConfig.blockSizeHorizontal*6
+                          ),),
                         ),
-                      )
-                    ]
-                  )
-                );
-              }
-              return CustomScrollView(
-                slivers: <Widget>[
-                  SliverAppBar(
-                    pinned: true,
-                    floating: false,
-                    backgroundColor: Colors.grey[600],
-                    expandedHeight: SizeConfig.screenHeight/4,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Image.asset('assets/images/hoodie_3.png', fit: BoxFit.cover),
-                      title: Padding(
-                        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4.25),
-                        child: Text('PROFILE', style: TextStyle(
-                          fontFamily: 'Saira',
-                          fontSize: SizeConfig.blockSizeHorizontal*6
-                        ),),
+                        centerTitle: true,
                       ),
-                      centerTitle: true,
                     ),
-                  ),
-                  profileList
-                ]
-              );
-            },
-          )
-        ],
+                    profileList
+                  ]
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }
