@@ -40,6 +40,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
           child: Center(
             child: Text(
               widget.name,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: 'Saira',
                 fontSize: SizeConfig.blockSizeVertical*2,

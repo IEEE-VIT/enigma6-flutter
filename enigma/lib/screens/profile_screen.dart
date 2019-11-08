@@ -84,110 +84,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  width: SizeConfig.screenWidth*0.75,
-                                  height: SizeConfig.blockSizeVertical*2,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                  ),
-                                ),
-                              ),
+                              ShimmerAnimation(shimmerHeight: SizeConfig.blockSizeVertical*2, shimmerWidth: SizeConfig.screenWidth*0.75),
                               SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  width: SizeConfig.screenWidth*0.3,
-                                  height: SizeConfig.blockSizeVertical*2,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                  ),
-                                ),
-                              ),
+                              ShimmerAnimation(shimmerHeight: SizeConfig.blockSizeVertical*2, shimmerWidth: SizeConfig.screenWidth*0.3),
+
                               SizedBox(height: SizeConfig.blockSizeVertical*5,),
 
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  width: SizeConfig.screenWidth*0.75,
-                                  height: SizeConfig.blockSizeVertical*2,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                  ),
-                                ),
-                              ),
+                              ShimmerAnimation(shimmerHeight: SizeConfig.blockSizeVertical*2, shimmerWidth: SizeConfig.screenWidth*0.75),
                               SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  width: SizeConfig.screenWidth*0.3,
-                                  height: SizeConfig.blockSizeVertical*2,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                 ),
-                                ),
-                              ),
+                              ShimmerAnimation(shimmerHeight: SizeConfig.blockSizeVertical*2, shimmerWidth: SizeConfig.screenWidth*0.3),
+                              
                               SizedBox(height: SizeConfig.blockSizeVertical*5,),
 
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  width: SizeConfig.screenWidth*0.75,
-                                  height: SizeConfig.blockSizeVertical*2,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                    ),
-                                ),
-                              ),
+                              ShimmerAnimation(shimmerHeight: SizeConfig.blockSizeVertical*2, shimmerWidth: SizeConfig.screenWidth*0.75),
                               SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  width: SizeConfig.screenWidth*0.3,
-                                  height: SizeConfig.blockSizeVertical*2,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                  ),
-                                ),
-                              ),
+                              ShimmerAnimation(shimmerHeight: SizeConfig.blockSizeVertical*2, shimmerWidth: SizeConfig.screenWidth*0.3),
+
                               SizedBox(height: SizeConfig.blockSizeVertical*5,),
-                              Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  width: SizeConfig.screenHeight/3,
-                                  height: SizeConfig.screenHeight/6,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: SizeConfig.blockSizeVertical*7,),Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  width: SizeConfig.screenHeight/3,
-                                  height: SizeConfig.screenHeight/6,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
-                                  ),
-                                ),
-                              ),
+                              
+                              ShimmerAnimation(shimmerHeight: SizeConfig.screenHeight/5, shimmerWidth: SizeConfig.screenHeight/3),
+                              SizedBox(height: SizeConfig.blockSizeVertical*7,),
+                              ShimmerAnimation(shimmerHeight: SizeConfig.screenHeight/5, shimmerWidth: SizeConfig.screenHeight/3),
                             ],
                           ),
                         )
@@ -220,6 +137,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class ShimmerAnimation extends StatelessWidget {
+  double shimmerWidth;
+  double shimmerHeight;
+
+  ShimmerAnimation({this.shimmerHeight, this.shimmerWidth});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      period: const Duration(milliseconds: 1000),
+      baseColor: Colors.grey[400],
+      highlightColor: Colors.grey[100],
+      child: Container(
+        width: shimmerWidth,
+        height: shimmerHeight,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3)
         ),
       ),
     );
@@ -273,14 +215,14 @@ class ProfileCard extends StatelessWidget {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: SizeConfig.blockSizeVertical*3),
+                  SizedBox(height: SizeConfig.blockSizeVertical*3.5),
                   Text(number.toString(),
                   style: TextStyle(color: Colors.white, fontSize: SizeConfig.blockSizeVertical*7, fontFamily: 'Saira')
                   ),
-                  SizedBox(height: SizeConfig.blockSizeVertical*1.6,),
+                  SizedBox(height: SizeConfig.blockSizeVertical*1.5,),
                   Container(
-                    height: SizeConfig.blockSizeVertical*4,
-                      width: SizeConfig.screenHeight/3.15,
+                    height: SizeConfig.blockSizeVertical*5.5,
+                    width: SizeConfig.screenHeight/3.15,
                     child: Card(
                       child: Center(child: Text(text, style: TextStyle(
                         fontFamily: 'Saira',

@@ -28,7 +28,10 @@ class _AuthScreenState extends State<AuthScreen> {
 		'password': '',
 	};
 	var _isLoading = false;
+	var _isGoogleLoading = false;
 	final _passwordController = TextEditingController();
+
+	double opacity = 1.0;
 
 	void _showErrorDialog(String error){
 		showDialog(
@@ -76,7 +79,8 @@ class _AuthScreenState extends State<AuthScreen> {
           	_showErrorDialog('It seems like you haven\'t verified your mail. Please do so before proceeding.');
           	return;
           }
-          await Provider.of<Auth>(context).registerUser(response.uid, '', response.email).then((val){
+          await Provider.of<Auth>(context).registerUser(response.uid, '', response.email).
+          then((val){
             if(val.wasUserRegistered==true){
               Navigator.of(context).pushNamed(QuestionScreen.routeName);
             }
@@ -84,7 +88,7 @@ class _AuthScreenState extends State<AuthScreen> {
               Navigator.of(context).pushNamed(ProfileSetupScreen.routeName);
             }
           });
-        });				
+        });
 			
 			} else {
 				// Sign user up
@@ -105,13 +109,14 @@ class _AuthScreenState extends State<AuthScreen> {
         });
 			}
 		}
+
 		catch(error){
 			print('lol');
-			print(error.toString());
+			print("$error gay");
 			if (error.toString().contains('ERROR_WRONG_PASSWORD')){
 				_showErrorDialog('It seems you have entered a wrong password.');
 			}
-			else if(error.toString().contains('ERROR_USER_DOES_NOT_EXIST')){
+			else if(error.toString().contains('ERROR_USER_NOT_FOUND')){
 				_showErrorDialog('Please sign up with this email before loggin in.');
 			}
 			else{
@@ -125,10 +130,20 @@ class _AuthScreenState extends State<AuthScreen> {
 		});
 	}
 
+	changeOpacity() {
+		Future.delayed(Duration(milliseconds: 500), () {
+			setState(() {
+				opacity = opacity == 0.0 ? 1.0 : 0.0;
+				changeOpacity();
+			});
+		});
+	}
+
 	@override
 	void initState() {
 		password1Visible = false;
 		password2Visible = false;
+		changeOpacity();
 		super.initState();
 	}
 
@@ -205,8 +220,27 @@ class _AuthScreenState extends State<AuthScreen> {
 													width: SizeConfig.blockSizeHorizontal*75,
 													// Google Login Button
 													child: _authMode == AuthMode.Signup ? SizedBox(height: 0,)
-													: FlatButton(
+													: _isGoogleLoading ?
+													AnimatedOpacity(
+														duration: Duration(milliseconds: 500),
+														opacity: opacity,
+														child:
+															Container(
+															padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*7),
+															child: Text('Signing you in with Google', style: TextStyle(
+															color: Colors.white,
+															fontFamily: 'Saira',
+															fontSize: SizeConfig.safeBlockHorizontal*5,
+															fontStyle: FontStyle.normal,
+															),),
+															)
+													)
+													:
+														FlatButton(
 														onPressed: () async{
+															setState(() {
+															  _isGoogleLoading=true;
+															});
 															try{
                                 await Provider.of<Auth>(context).signInWithGoogle().then((response) async {
                                   await Provider.of<Auth>(context).registerUser(response.uid, '', response.email).then((val){
@@ -217,11 +251,14 @@ class _AuthScreenState extends State<AuthScreen> {
                                       Navigator.of(context).pushNamed(ProfileSetupScreen.routeName);
                                     }
                                   });
-                                });																
+                                });
 															}
 															catch(e)
 															{
-																print(e);
+																_showErrorDialog('Failed to authenticate you!');
+																setState(() {
+																  _isGoogleLoading=false;
+																});
 															}
 														},
 														color: Color.fromRGBO(33, 33, 33, 1),

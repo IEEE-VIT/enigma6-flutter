@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enigma/providers/auth.dart';
 import 'package:enigma/providers/hint.dart';
 import 'package:enigma/size_config.dart';
@@ -42,18 +43,23 @@ class _QuestionPicState extends State<QuestionPic> {
     return Stack(
       children: <Widget>[
           Center(
-            child: Container(
-              height: SizeConfig.screenHeight/3,
-              width: SizeConfig.screenWidth/1.2,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*4),
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
-                  fit: BoxFit.fill,
-                  image: NetworkImage('https://www.worldatlas.com/r/w728-h425-c728x425/upload/db/96/3f/enigma-machine.jpg')
+              child: CachedNetworkImage(
+                imageUrl: "http://via.placeholder.com/200x150",
+                imageBuilder: (context, imageProvider) => Container(
+                  height: SizeConfig.screenHeight/3,
+                  width: SizeConfig.screenWidth/1.2,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*4),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                    ),
+                  ),
                 ),
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-            ),
           ),
         Positioned(
           left: SizeConfig.blockSizeHorizontal*5.32,
