@@ -14,11 +14,20 @@ description: Enigma 6.0
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  firebase_auth: ^0.14.0+5
+  google_sign_in: ^4.0.7
+  provider:  ^3.1.0
+  percent_indicator: ^2.1.1+1
+  http: ^0.12.0+2
+  shared_preferences: ^0.5.3+4
+  shimmer: ^1.0.1
+  cached_network_image: ^1.1.3
+  connectivity: ^0.4.5+3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -39,7 +48,38 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/background.png
+    - assets/images/enigma.png
+    - assets/images/hoodie_2.png
+    - assets/images/hoodie.png
+    - assets/images/hoodie_3.png
+    - assets/images/road.png
+    - assets/images/key.png
+    - assets/images/winner.png
+    - assets/images/question.png
+    - assets/images/score.png
+    - assets/images/rank.png
+    - assets/images/leaderboard.png
+    - assets/images/rules.png
+    - assets/images/game.png
+    - assets/images/logout.png
+    - assets/images/profile.png
 
+  fonts:
+    - family: Chosence
+      fonts:
+        - asset: assets/fonts/chosence/Chosence Bold Italic.otf
+        - asset: assets/fonts/chosence/Chosence Bold.otf
+        - asset: assets/fonts/chosence/Chosence Regular.otf
+        - asset: assets/fonts/chosence/Chosence Regular Italic.otf
+        - asset: assets/fonts/chosence/Chosence Light.otf
+        - asset: assets/fonts/chosence/Chosence Light Italic.otf
+    - family: Saira
+      fonts:
+        - asset: assets/fonts/saira/Saira-Regular.ttf
+        - asset: assets/fonts/saira/Saira-SemiBold.ttf
+        - asset: assets/fonts/saira/Saira-Bold.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
