@@ -79,6 +79,16 @@ class Auth with ChangeNotifier {
 		notifyListeners();
 	}
 
+	// sending a password reset email to the user.
+	Future<void> forgotPassword(String email) async{
+		try{
+			await _auth.sendPasswordResetEmail(email: email);
+		}
+		catch(error){
+			throw error;
+		}
+	}
+
 	// Signing in a user with his/her Google account.
 	Future<FirebaseUser> signInWithGoogle() async {
 		try{

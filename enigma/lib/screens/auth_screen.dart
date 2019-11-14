@@ -5,6 +5,7 @@ import 'package:enigma/size_config.dart';
 import 'package:enigma/providers/auth.dart';
 import 'package:provider/provider.dart';
 
+// Two types of auth modes: Signup and Login
 enum AuthMode { Signup, Login }
 
 AuthMode _authMode = AuthMode.Login;
@@ -27,18 +28,21 @@ class _AuthScreenState extends State<AuthScreen> {
 		'email': '',
 		'password': '',
 	};
-	var _isLoading = false;
-	var _isGoogleLoading = false;
+	// booleans to help control animations
+	bool _isLoading = false;
+	bool _isGoogleLoading = false;
+
 	final _passwordController = TextEditingController();
 
 	double opacity = 1.0;
 
+	// Template for error dialog
 	void _showErrorDialog(String error){
 		showDialog(
 			context: context,
 			builder: (ctx) => AlertDialog(
 				title: Text('Error!'),
-				content: Text('$error'), 
+				content: Text('$error'),
 				actions: <Widget>[
 					FlatButton(
 						child: Text('Ok'),
@@ -49,6 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
 		);
 	}
 
+	//For switching bw signup and login page.
 	void _switchAuthMode() {
 		if (_authMode == AuthMode.Login) {
 			setState(() {
@@ -61,7 +66,7 @@ class _AuthScreenState extends State<AuthScreen> {
 		}
 	}
 
-
+	//Logging in or signing up a user
 	void _submit() async{
 		if (!_formKey.currentState.validate()) {
 			// Invalid!
@@ -73,23 +78,26 @@ class _AuthScreenState extends State<AuthScreen> {
 		});
 		try{
 			if (_authMode == AuthMode.Login) {
-				// Log user in  
+				// Log user in
 		    await Provider.of<Auth>(context).emailPasswordLogin(_authData['email'], _authData['password']).then((response) async {
           if(!response.isEmailVerified){
+          	// User hasn't verified his/her email.
           	_showErrorDialog('It seems like you haven\'t verified your mail. Please do so before proceeding.');
           	return;
           }
           await Provider.of<Auth>(context).registerUser(response.uid, '', response.email).
           then((val){
             if(val.wasUserRegistered==true){
+            	// Direct them to the questions screen.
               Navigator.of(context).pushNamed(QuestionScreen.routeName);
             }
             else if (val.wasUserRegistered==false){
+            	// Direct them to profile setup screen.
               Navigator.of(context).pushNamed(ProfileSetupScreen.routeName);
             }
           });
         });
-			
+
 			} else {
 				// Sign user up
         await Provider.of<Auth>(context).emailPasswordSignup(_authData['email'], _authData['password']).then((onValue){
@@ -111,8 +119,7 @@ class _AuthScreenState extends State<AuthScreen> {
 		}
 
 		catch(error){
-			print('lol');
-			print("$error gay");
+			print("$error with signing up.");
 			if (error.toString().contains('ERROR_WRONG_PASSWORD')){
 				_showErrorDialog('It seems you have entered a wrong password.');
 			}
@@ -130,12 +137,15 @@ class _AuthScreenState extends State<AuthScreen> {
 		});
 	}
 
+	// helper function to control the google signup button's fading animation.
 	changeOpacity() {
-		Future.delayed(Duration(milliseconds: 500), () {
-			setState(() {
-				opacity = opacity == 0.0 ? 1.0 : 0.0;
-				changeOpacity();
-			});
+		Future.delayed(Duration(milliseconds: 400), () {
+			if(mounted){
+				setState(() {
+					opacity = opacity == 0.0 ? 1.0 : 0.0;
+					changeOpacity();
+				});
+			}
 		});
 	}
 
@@ -143,7 +153,6 @@ class _AuthScreenState extends State<AuthScreen> {
 	void initState() {
 		password1Visible = false;
 		password2Visible = false;
-		changeOpacity();
 		super.initState();
 	}
 
@@ -167,7 +176,7 @@ class _AuthScreenState extends State<AuthScreen> {
 								mainAxisAlignment: MainAxisAlignment.start,
 								crossAxisAlignment: CrossAxisAlignment.center,
 								children: <Widget>[
-									//CustomApppBar with image and title
+									//CustomAppBar with image and title
 									Flexible(
 										child: _authMode == AuthMode.Login ?
 										Container(
@@ -208,6 +217,7 @@ class _AuthScreenState extends State<AuthScreen> {
 											),),
 										)
 									),
+
 									Flexible(
 										flex: 3,
 										child: Column(
@@ -217,16 +227,17 @@ class _AuthScreenState extends State<AuthScreen> {
 												SizedBox(
 													height: _authMode == AuthMode.Signup ? SizeConfig.blockSizeVertical
 													: SizeConfig.blockSizeVertical*7,
-													width: SizeConfig.blockSizeHorizontal*75,
+													width: SizeConfig.blockSizeHorizontal*70,
 													// Google Login Button
 													child: _authMode == AuthMode.Signup ? SizedBox(height: 0,)
 													: _isGoogleLoading ?
+														//Fading animation when user is being logged in through google.
 													AnimatedOpacity(
-														duration: Duration(milliseconds: 500),
+														duration: Duration(milliseconds: 400),
 														opacity: opacity,
 														child:
 															Container(
-															padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*7),
+															padding: EdgeInsets.only(left: SizeConfig.blockSizeHorizontal*5),
 															child: Text('Signing you in with Google', style: TextStyle(
 															color: Colors.white,
 															fontFamily: 'Saira',
@@ -239,6 +250,7 @@ class _AuthScreenState extends State<AuthScreen> {
 														FlatButton(
 														onPressed: () async{
 															setState(() {
+																changeOpacity();
 															  _isGoogleLoading=true;
 															});
 															try{
@@ -274,6 +286,7 @@ class _AuthScreenState extends State<AuthScreen> {
 													),
 												),
 												Padding(padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical*2)),
+
 												_authMode == AuthMode.Signup ? Text('')
 												: Text('OR', style: TextStyle(
 													color: Colors.white,
@@ -281,10 +294,12 @@ class _AuthScreenState extends State<AuthScreen> {
 													fontStyle: FontStyle.normal,
 													fontSize: SizeConfig.safeBlockHorizontal*4
 												)),
+
 												Form(
 													key: _formKey,
 													child: SingleChildScrollView(
 														child: Container(
+                              padding: EdgeInsets.only(right: SizeConfig.blockSizeHorizontal),
 															width: SizeConfig.blockSizeHorizontal*65,
 															child: Column(
 																children: <Widget>[
@@ -294,19 +309,22 @@ class _AuthScreenState extends State<AuthScreen> {
 																		decoration: InputDecoration(
 																			labelText: 'Email',
 																			labelStyle: TextStyle(
-																				color: Colors.white, 
+																				color: Colors.white,
 																				fontSize: SizeConfig.blockSizeHorizontal*4,
 																				fontStyle: FontStyle.normal,
 																				fontFamily: 'Saira'
 																				),
 																			contentPadding: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal*3, 0, 0, SizeConfig.blockSizeVertical*2),
-																			enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)) 
-																			),
+																			enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white))
+																		),
 																		keyboardType: TextInputType.emailAddress,
 // ignore: missing_return
 																		validator: (value) {
-																			if (value.isEmpty || !value.contains('@')) {
+																			if (!value.contains('@')) {
 																				return 'Invalid email!';
+																			}
+																			else if(value.isEmpty){
+																				return 'Please enter an email adress.';
 																			}
 																		},
 																		onSaved: (value) {
@@ -319,7 +337,7 @@ class _AuthScreenState extends State<AuthScreen> {
 																		decoration: InputDecoration(
 																			labelText: 'Password',
 																			labelStyle: TextStyle(
-																				color: Colors.white, 
+																				color: Colors.white,
 																				fontSize: SizeConfig.blockSizeHorizontal*4,
 																				fontStyle: FontStyle.normal,
 																				fontFamily: 'Saira'
@@ -335,7 +353,7 @@ class _AuthScreenState extends State<AuthScreen> {
 																					color: Colors.white,
 																					),
 																				onPressed: () {
-																					// Update the state i.e. toogle the state of passwordVisible variable
+																					// Update the state i.e. toggle the state of passwordVisible variable
 																					setState(() {
 																							password1Visible = !password1Visible;
 																					});
@@ -346,8 +364,11 @@ class _AuthScreenState extends State<AuthScreen> {
 																		controller: _passwordController,
 // ignore: missing_return
 																		validator: (value) {
-																			if (value.isEmpty || value.length < 5) {
+																			if (value.length < 6) {
 																				return 'Password is too short!';
+																			}
+																			else if(value.isEmpty){
+																				return 'Please enter a password.';
 																			}
 																		},
 																		onSaved: (value) {
@@ -362,7 +383,7 @@ class _AuthScreenState extends State<AuthScreen> {
 																			decoration: InputDecoration(
 																				labelText: 'Confirm Password',
 																				labelStyle: TextStyle(
-																					color: Colors.white, 
+																					color: Colors.white,
 																					fontSize: SizeConfig.blockSizeHorizontal*4,
 																					fontStyle: FontStyle.normal,
 																					fontFamily: 'Saira'
@@ -398,14 +419,14 @@ class _AuthScreenState extends State<AuthScreen> {
 																						null
 																			)
 																			:
-																			GestureDetector(
-																				onTap: (){},
+																			// Forgot password button
+																			InkWell(
+																				onTap: () async{},
 																				child: Container(
 																				padding: EdgeInsets.fromLTRB(0, SizeConfig.blockSizeVertical*3, SizeConfig.blockSizeHorizontal*35,0 ),
 																					child:Text('Forgot Password?', style: TextStyle(
 																						color: Colors.white,
-																					),
-																					),
+																					),),
 																				),
 																			),
 																	),
@@ -435,9 +456,9 @@ class _AuthScreenState extends State<AuthScreen> {
 																			color: _authMode == AuthMode.Signup ? Colors.yellow[600] : Color.fromRGBO(206, 246, 249, 1),
 																			textColor: Colors.black,
 																		),
-																	_authMode == AuthMode.Login 
+																	_authMode == AuthMode.Login
 																	? SizedBox(height: SizeConfig.blockSizeVertical*9.5,)
-																	:SizedBox(height: SizeConfig.blockSizeVertical*8),
+																	: SizedBox(height: SizeConfig.blockSizeVertical*8),
 																	Row(
 																		mainAxisAlignment: MainAxisAlignment.center,
 																		children: <Widget>[
@@ -446,7 +467,7 @@ class _AuthScreenState extends State<AuthScreen> {
 																				fontSize: SizeConfig.blockSizeHorizontal*4,
 																				fontFamily: 'Saira'
 																			),),
-																			GestureDetector(
+																			InkWell(
 																				onTap: (){_switchAuthMode();},
 																				child: Text('${_authMode == AuthMode.Login ? 'Sign Up' : 'Login'}', style: TextStyle(
 																					color: _authMode == AuthMode.Login ? Colors.yellow[600] : Color.fromRGBO(206, 246, 249, 1),
@@ -464,7 +485,7 @@ class _AuthScreenState extends State<AuthScreen> {
 												),
 											],
 										),
-									)                    
+									)
 								],
 							),
 						),

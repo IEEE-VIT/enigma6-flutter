@@ -17,7 +17,7 @@ Future<Leaderboard> _getLeaderBoard(String uid) async{
     headers: {'Authorization': 'Bearer $uid'}
   );
 
-  print(response.body);
+  print('Leaderboard data size: ${response.body.length}');
   final leaders = leaderboardFromJson(response.body);
   return leaders;
 }
@@ -76,16 +76,19 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
               builder: (context, snapshot){
                 Widget listLeaders;
                 if(snapshot.connectionState == ConnectionState.waiting){
-                  listLeaders = SliverToBoxAdapter(
-                    child: Center(
-                      child: Container(
-                        padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
-                        width: SizeConfig.blockSizeHorizontal*10,
-                        child: //Text(';p;', style: TextStyle(color: Colors.white),)
-                                CircularProgressIndicator()
-                        ),
-                    ),
-                  );
+                  listLeaders = SliverList(
+										delegate: SliverChildListDelegate(
+											[
+												for(int i=0; i<12; i++)
+													Column(
+														children: <Widget>[
+															FadingPlaceholder(),
+															SizedBox(height: SizeConfig.blockSizeVertical*3)
+													],)
+
+											]
+										),
+									);
                 }
                 else{
                   listLeaders = SliverList(
@@ -189,6 +192,87 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
     );
   }
 }
+
+class FadingPlaceholder extends StatefulWidget {
+  @override
+  _FadingPlaceholderState createState() => _FadingPlaceholderState();
+}
+
+class _FadingPlaceholderState extends State<FadingPlaceholder> {
+
+	double opacity = 1.0;
+
+	changeOpacity() {
+		Future.delayed(Duration(milliseconds: 350), () {
+			if(mounted){
+				setState(() {
+					opacity = opacity == 0.0 ? 1.0 : 0.0;
+					changeOpacity();
+				});
+			}
+		});
+	}
+
+	@override
+  void initState() {
+		changeOpacity();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+			mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        AnimatedOpacity(
+					opacity: opacity,
+          duration: Duration(milliseconds: 350),
+          child: Container(
+						height: SizeConfig.blockSizeVertical*2,
+						width: SizeConfig.blockSizeHorizontal*15,
+						decoration: BoxDecoration(color: Color.fromRGBO(239, 240, 245, 1),
+						borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3),
+						)
+					),
+        ),
+				AnimatedOpacity(
+					opacity: opacity,
+					duration: Duration(milliseconds: 350),
+					child: Container(
+						height: SizeConfig.blockSizeVertical*2,
+						width: SizeConfig.blockSizeHorizontal*15,
+						decoration: BoxDecoration(color: Color.fromRGBO(239, 240, 245, 1),
+							borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3),
+						)
+					),
+				),
+				AnimatedOpacity(
+					opacity: opacity,
+					duration: Duration(milliseconds: 350),
+					child: Container(
+						height: SizeConfig.blockSizeVertical*2,
+						width: SizeConfig.blockSizeHorizontal*15,
+						decoration: BoxDecoration(color: Color.fromRGBO(239, 240, 245, 1),
+							borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3),
+						)
+					),
+				),
+				AnimatedOpacity(
+					opacity: opacity,
+					duration: Duration(milliseconds: 350),
+					child: Container(
+						height: SizeConfig.blockSizeVertical*2,
+						width: SizeConfig.blockSizeHorizontal*15,
+						decoration: BoxDecoration(color: Color.fromRGBO(239, 240, 245, 1),
+							borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3),
+						)
+					),
+				),
+      ],
+    );
+  }
+}
+
 
 
 
