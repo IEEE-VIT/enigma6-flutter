@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:enigma/providers/auth.dart';
 import 'package:enigma/providers/hint.dart';
 import 'package:enigma/size_config.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 
 const hintUrl = 'https://enigma6-backend.herokuapp.com/api/auth/hintClicked/';
 String hintText;
+AnimationController rotationController;
 
 Future<HintResponse> getHint(String uid) async{
   final response = await http.post(
@@ -28,11 +30,11 @@ class QuestionPic extends StatefulWidget {
 
 bool hintClicked = false;
 
-class _QuestionPicState extends State<QuestionPic> {
+class _QuestionPicState extends State<QuestionPic> with SingleTickerProviderStateMixin{
 
   @override
   void initState() {
-
+		rotationController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
     super.initState();
   }
   @override
@@ -42,18 +44,23 @@ class _QuestionPicState extends State<QuestionPic> {
     return Stack(
       children: <Widget>[
           Center(
-            child: Container(
-              height: SizeConfig.screenHeight/3,
-              width: SizeConfig.screenWidth/1.2,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*4),
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
-                  fit: BoxFit.fill,
-                  image: NetworkImage('https://www.worldatlas.com/r/w728-h425-c728x425/upload/db/96/3f/enigma-machine.jpg')
+              child: CachedNetworkImage(
+                imageUrl: "http://via.placeholder.com/200x150",
+                imageBuilder: (context, imageProvider) => Container(
+                  height: SizeConfig.screenHeight/3,
+                  width: SizeConfig.screenWidth/1.2,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(SizeConfig.blockSizeHorizontal*4),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                    ),
+                  ),
                 ),
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-            ),
           ),
         Positioned(
           left: SizeConfig.blockSizeHorizontal*5.32,
@@ -66,7 +73,7 @@ class _QuestionPicState extends State<QuestionPic> {
               width: SizeConfig.blockSizeHorizontal*12,
               //padding: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal*4.5, SizeConfig.blockSizeVertical*0.8, 0, 0),
               child: Center(
-                child: Text(widget.questionNumber, style: TextStyle(
+                child: Text(widget.questionNumber!= null ? widget.questionNumber : " ", style: TextStyle(
                   fontFamily: 'Saira',
                   fontSize: SizeConfig.blockSizeVertical*3,
                   fontStyle: FontStyle.normal,
@@ -90,6 +97,7 @@ class _QuestionPicState extends State<QuestionPic> {
               setState(() {
                 hintClicked = true;
                 hintText = result.payload.hint;
+                print(hintText);
               });
             },
             child: Card(
@@ -121,7 +129,7 @@ class _QuestionPicState extends State<QuestionPic> {
                 height: SizeConfig.blockSizeHorizontal*12,
                 width: SizeConfig.screenWidth/1.2,
                 padding: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal*3,SizeConfig.blockSizeHorizontal*3,SizeConfig.blockSizeHorizontal*3,SizeConfig.blockSizeHorizontal*3),
-                child: Text('hintText', style: TextStyle(
+                child: Text(hintText != null ? hintText : " ", style: TextStyle(
                 fontFamily: 'Saira',
                 fontSize: SizeConfig.blockSizeVertical*2,
                 fontStyle: FontStyle.normal,

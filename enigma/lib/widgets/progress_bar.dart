@@ -38,7 +38,7 @@ class _ProgressBarState extends State<ProgressBar> {
         Padding(padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical),),
         LinearPercentIndicator(
             width: SizeConfig.screenWidth*0.89,
-            percent: 0.5,
+            percent: widget.level/30,
             progressColor: Colors.yellow[600],
             animation: true,
             lineHeight: SizeConfig.blockSizeVertical,

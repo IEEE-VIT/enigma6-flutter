@@ -10,65 +10,68 @@ class RulesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      drawer: AppDrawer(),
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black
-            ),
-          ),
-          CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-              backgroundColor: Color.fromRGBO(187, 21, 130, 1),
-              expandedHeight: 200.0,
-              floating: false,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Text("RULES",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Chosence',
-                      fontSize: SizeConfig.blockSizeHorizontal*6,
-                      fontStyle: FontStyle.normal,
-                    )),
-                background: Image.asset('assets/images/road.png',
-                  fit: BoxFit.cover,
-                )),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        drawer: AppDrawer(),
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black
               ),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [ 
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*2,),
-                    RulesWidget('For every correct answer without using hints, you will get x points'),
-                    SizedBox(height: SizeConfig.blockSizeVertical*5,) 
-                  ]
+            ),
+            CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                backgroundColor: Color.fromRGBO(187, 21, 130, 1),
+                expandedHeight: 200.0,
+                floating: false,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text("RULES",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Chosence',
+                        fontSize: SizeConfig.blockSizeHorizontal*6,
+                        fontStyle: FontStyle.normal,
+                      )),
+                  background: Image.asset('assets/images/road.png',
+                    fit: BoxFit.cover,
+                  )),
                 ),
-              )
-            ],
-          ),
-        ] 
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*2,),
+                      RulesWidget('For every correct answer without using hints, you will get x points'),
+                      SizedBox(height: SizeConfig.blockSizeVertical*5,)
+                    ]
+                  ),
+                )
+              ],
+            ),
+          ]
+        ),
       ),
     );
   }

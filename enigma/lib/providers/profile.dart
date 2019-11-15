@@ -1,6 +1,6 @@
+
 // To parse this JSON data, do
-//
-//     final profile = profileFromJson(jsonString);
+// final profile = profileFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -70,7 +70,9 @@ class User {
         email: json["email"],
         points: json["points"],
         level: json["level"],
-        usedHint: List<bool>.from(json["usedHint"].map((x) => x)),
+        usedHint: json.containsKey("usedHint")
+          ? List<bool>.from(json["usedHint"].map((x) => x))
+          : [],
         rank: json["rank"],
     );
 

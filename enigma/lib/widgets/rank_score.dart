@@ -22,8 +22,8 @@ class RankAndScore extends StatelessWidget {
              fontFamily: 'Saira',
            ),
            children: <TextSpan>[
-             new TextSpan(text: 'SCORE ', style: new TextStyle(color: Colors.white)),
-             new TextSpan(text: ' - 20', style: new TextStyle(color: Colors.yellow[600])),
+             new TextSpan(text: 'SCORE - ', style: new TextStyle(color: Colors.white)),
+             new TextSpan(text: score, style: new TextStyle(color: Colors.yellow[600])),
            ]
          ),
        ),
@@ -35,8 +35,8 @@ class RankAndScore extends StatelessWidget {
              fontFamily: 'Saira',
            ),
            children: <TextSpan>[
-             new TextSpan(text: 'RANK ', style: new TextStyle(color: Colors.white)),
-             new TextSpan(text: ' - 5', style: new TextStyle(color: Colors.yellow[600])),
+             new TextSpan(text: 'RANK - ', style: new TextStyle(color: Colors.white)),
+             new TextSpan(text: rank, style: new TextStyle(color: Colors.yellow[600])),
            ]
          ),
        ),

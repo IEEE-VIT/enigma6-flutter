@@ -17,7 +17,7 @@ Future<Leaderboard> _getLeaderBoard(String uid) async{
     headers: {'Authorization': 'Bearer $uid'}
   );
 
-  print(response.body);
+  print('Leaderboard data size: ${response.body.length}');
   final leaders = leaderboardFromJson(response.body);
   return leaders;
 }
@@ -60,132 +60,219 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      drawer: AppDrawer(),
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        drawer: AppDrawer(),
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black
+              ),
             ),
-          ),
-          FutureBuilder<Leaderboard>(
-            future: playerList,
-            builder: (context, snapshot){
-              Widget listLeaders;
-              if(snapshot.connectionState == ConnectionState.waiting){
-                listLeaders = SliverToBoxAdapter(
-                  child: Center(
-                    child: Container(
-                      padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical*4),
-                      width: SizeConfig.blockSizeHorizontal*10,
-                      child: //Text(';p;', style: TextStyle(color: Colors.white),)
-                              CircularProgressIndicator()
-                      ),
-                  ),
-                );
-              }
-              else{
-                listLeaders = SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      for(int i = 0; i<snapshot.data.payload.leaderBoard.length; i++)
-                        Column(children: <Widget>[
-                          LeaderBoardWidget(
-                          name: snapshot.data.payload.leaderBoard[i].name,
-                          score: snapshot.data.payload.leaderBoard[i].points.toString(),
-                          rank: snapshot.data.payload.leaderBoard[i].rank.toString(),
-                          ques: snapshot.data.payload.leaderBoard[i].level.toString(),
-                          ),
-                          SizedBox(height: SizeConfig.blockSizeVertical*3)
-                        ],
-                      )
-                    ]
-                  )
-                );
-              }
-              return CustomScrollView(
-                slivers: <Widget>[
-                  leaderAppBar,
-                  SliverList(
+            FutureBuilder<Leaderboard>(
+              future: playerList,
+              builder: (context, snapshot){
+                Widget listLeaders;
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  listLeaders = SliverList(
+										delegate: SliverChildListDelegate(
+											[
+												for(int i=0; i<12; i++)
+													Column(
+														children: <Widget>[
+															FadingPlaceholder(),
+															SizedBox(height: SizeConfig.blockSizeVertical*3)
+													],)
+
+											]
+										),
+									);
+                }
+                else{
+                  listLeaders = SliverList(
                     delegate: SliverChildListDelegate(
-                      [ 
-                        SizedBox(height: SizeConfig.blockSizeVertical*3,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Container(
-                              width: SizeConfig.blockSizeHorizontal*15,
-                              child: Center(
-                                child: Text(
-                                  "RANK",
-                                  style: TextStyle(
-                                    fontFamily: 'Saira',
-                                    fontSize: SizeConfig.blockSizeVertical*2,
-                                    fontStyle: FontStyle.normal,
-                                    color: Color.fromRGBO(164, 34, 255, 1)
-                                  ),
-                                ),
-                              ),
+                      [
+                        for(int i = 0; i<snapshot.data.payload.leaderBoard.length; i++)
+                          Column(children: <Widget>[
+                            LeaderBoardWidget(
+                            name: snapshot.data.payload.leaderBoard[i].name,
+                            score: snapshot.data.payload.leaderBoard[i].points.toString(),
+                            rank: snapshot.data.payload.leaderBoard[i].rank.toString(),
+                            ques: snapshot.data.payload.leaderBoard[i].level.toString(),
                             ),
-                            Container(
-                              width: SizeConfig.blockSizeHorizontal*15,
-                              child: Center(
-                                child: Text(
-                                  "NAME",
-                                  style: TextStyle(
-                                    fontFamily: 'Saira',
-                                    fontSize: SizeConfig.blockSizeVertical*2,
-                                    fontStyle: FontStyle.normal,
-                                    color: Color.fromRGBO(164, 34, 255, 1)
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: SizeConfig.blockSizeHorizontal*15,
-                              child: Center(
-                                child: Text(
-                                  "LEVEL",
-                                  style: TextStyle(
-                                    fontFamily: 'Saira',
-                                    fontSize: SizeConfig.blockSizeVertical*2,
-                                    fontStyle: FontStyle.normal,
-                                    color: Color.fromRGBO(164, 34, 255, 1)
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: SizeConfig.blockSizeHorizontal*15,
-                              child: Center(
-                                child: Text(
-                                  "SCORE",
-                                  style: TextStyle(
-                                    fontFamily: 'Saira',
-                                    fontSize: SizeConfig.blockSizeVertical*2,
-                                    fontStyle: FontStyle.normal,
-                                    color: Color.fromRGBO(164, 34, 255, 1)
-                                  ),
-                                ),
-                              ),
-                            ),
+                            SizedBox(height: SizeConfig.blockSizeVertical*3)
                           ],
-                        ),
-                        SizedBox(height: SizeConfig.blockSizeVertical*3,),
+                        )
                       ]
                     )
-                  ),
-                  listLeaders
-                ]
-              );
-            },
-          )
-        ]
-      ) 
+                  );
+                }
+                return CustomScrollView(
+                  slivers: <Widget>[
+                    leaderAppBar,
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          SizedBox(height: SizeConfig.blockSizeVertical*3,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Container(
+                                width: SizeConfig.blockSizeHorizontal*15,
+                                child: Center(
+                                  child: Text(
+                                    "RANK",
+                                    style: TextStyle(
+                                      fontFamily: 'Saira',
+                                      fontSize: SizeConfig.blockSizeVertical*2,
+                                      fontStyle: FontStyle.normal,
+                                      color: Color.fromRGBO(164, 34, 255, 1)
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: SizeConfig.blockSizeHorizontal*15,
+                                child: Center(
+                                  child: Text(
+                                    "NAME",
+                                    style: TextStyle(
+                                      fontFamily: 'Saira',
+                                      fontSize: SizeConfig.blockSizeVertical*2,
+                                      fontStyle: FontStyle.normal,
+                                      color: Color.fromRGBO(164, 34, 255, 1)
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: SizeConfig.blockSizeHorizontal*15,
+                                child: Center(
+                                  child: Text(
+                                    "LEVEL",
+                                    style: TextStyle(
+                                      fontFamily: 'Saira',
+                                      fontSize: SizeConfig.blockSizeVertical*2,
+                                      fontStyle: FontStyle.normal,
+                                      color: Color.fromRGBO(164, 34, 255, 1)
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: SizeConfig.blockSizeHorizontal*15,
+                                child: Center(
+                                  child: Text(
+                                    "SCORE",
+                                    style: TextStyle(
+                                      fontFamily: 'Saira',
+                                      fontSize: SizeConfig.blockSizeVertical*2,
+                                      fontStyle: FontStyle.normal,
+                                      color: Color.fromRGBO(164, 34, 255, 1)
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: SizeConfig.blockSizeVertical*3,),
+                        ]
+                      )
+                    ),
+                    listLeaders
+                  ]
+                );
+              },
+            )
+          ]
+        )
+      ),
     );
   }
 }
+
+class FadingPlaceholder extends StatefulWidget {
+  @override
+  _FadingPlaceholderState createState() => _FadingPlaceholderState();
+}
+
+class _FadingPlaceholderState extends State<FadingPlaceholder> {
+
+	double opacity = 1.0;
+
+	changeOpacity() {
+		Future.delayed(Duration(milliseconds: 400), () {
+			if(mounted){
+				setState(() {
+					opacity = opacity == 0.2 ? 1.0 : 0.2;
+					changeOpacity();
+				});
+			}
+		});
+	}
+
+	@override
+  void initState() {
+		changeOpacity();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+			mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        AnimatedOpacity(
+					opacity: opacity,
+          duration: Duration(milliseconds: 400),
+          child: Container(
+						height: SizeConfig.blockSizeVertical*2,
+						width: SizeConfig.blockSizeHorizontal*15,
+						decoration: BoxDecoration(color: Color.fromRGBO(239, 240, 245, 1),
+						borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3),
+						)
+					),
+        ),
+				AnimatedOpacity(
+					opacity: opacity,
+					duration: Duration(milliseconds: 400),
+					child: Container(
+						height: SizeConfig.blockSizeVertical*2,
+						width: SizeConfig.blockSizeHorizontal*15,
+						decoration: BoxDecoration(color: Color.fromRGBO(239, 240, 245, 1),
+							borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3),
+						)
+					),
+				),
+				AnimatedOpacity(
+					opacity: opacity,
+					duration: Duration(milliseconds: 400),
+					child: Container(
+						height: SizeConfig.blockSizeVertical*2,
+						width: SizeConfig.blockSizeHorizontal*15,
+						decoration: BoxDecoration(color: Color.fromRGBO(239, 240, 245, 1),
+							borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3),
+						)
+					),
+				),
+				AnimatedOpacity(
+					opacity: opacity,
+					duration: Duration(milliseconds: 400),
+					child: Container(
+						height: SizeConfig.blockSizeVertical*2,
+						width: SizeConfig.blockSizeHorizontal*15,
+						decoration: BoxDecoration(color: Color.fromRGBO(239, 240, 245, 1),
+							borderRadius: BorderRadius.circular(SizeConfig.blockSizeVertical*3),
+						)
+					),
+				),
+      ],
+    );
+  }
+}
+
 
 
 

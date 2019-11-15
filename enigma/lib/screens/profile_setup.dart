@@ -139,74 +139,77 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   Widget build(BuildContext context) {
     final token = Provider.of<Auth>(context);
     SizeConfig().init(context);
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black
+              ),
             ),
-          ),
-          SingleChildScrollView(
-            child: Container(
-              height: SizeConfig.screenHeight,
-              width: SizeConfig.screenWidth,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(SizeConfig.screenWidth/8, SizeConfig.screenHeight/10, 0, 0),
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.screenHeight/4,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: ExactAssetImage('assets/images/hoodie_3.png'),
-                          fit: BoxFit.cover
-                        )
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('SET UP YOUR', style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Chosence',
-                            fontSize: SizeConfig.safeBlockHorizontal*8,
-                            fontStyle: FontStyle.normal,
-                            //fontWeight: FontWeight.bold
-                          ),),
-                          Text('PROFILE', style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Chosence',
-                            fontSize: SizeConfig.safeBlockHorizontal*12,
-                            fontStyle: FontStyle.normal,
-                            //fontWeight: FontWeight.bold
-                          ),),
-                        ],
-                      ),
-                    )
-                  ),
-                  Flexible(
-                    flex: 3,
-                    child: Form(
-                      key: _formKey,
-                      child: SingleChildScrollView(
-                        child: Container(
-                          width: SizeConfig.blockSizeHorizontal*65,
-                          child: Column(
-                            children: textField('Email', null, token.userEmail, false) + textField('First Name', 'first_name', null, true) + textField('Last Name', 'last_name', null, true) + textField('Username', 'username', null, true) + button(token)
+            SingleChildScrollView(
+              child: Container(
+                height: SizeConfig.screenHeight,
+                width: SizeConfig.screenWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(SizeConfig.screenWidth/8, SizeConfig.screenHeight/10, 0, 0),
+                        width: SizeConfig.screenWidth,
+                        height: SizeConfig.screenHeight/4,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: ExactAssetImage('assets/images/hoodie_3.png'),
+                            fit: BoxFit.cover
+                          )
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('SET UP YOUR', style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Chosence',
+                              fontSize: SizeConfig.safeBlockHorizontal*8,
+                              fontStyle: FontStyle.normal,
+                              //fontWeight: FontWeight.bold
+                            ),),
+                            Text('PROFILE', style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Chosence',
+                              fontSize: SizeConfig.safeBlockHorizontal*12,
+                              fontStyle: FontStyle.normal,
+                              //fontWeight: FontWeight.bold
+                            ),),
+                          ],
+                        ),
+                      )
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: Form(
+                        key: _formKey,
+                        child: SingleChildScrollView(
+                          child: Container(
+                            width: SizeConfig.blockSizeHorizontal*65,
+                            child: Column(
+                              children: textField('Email', null, token.userEmail, false) + textField('First Name', 'first_name', null, true) + textField('Last Name', 'last_name', null, true) + textField('Username', 'username', null, true) + button(token)
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ]
+                    )
+                  ]
+                )
               )
             )
-          )
-        ]
-      )
+          ]
+        )
+      ),
     );
   }
 }
